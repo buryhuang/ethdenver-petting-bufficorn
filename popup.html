@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pet</title>
+
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: antialiased;
+            box-sizing: border-box;
+        }
+        html, body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .buttons .btn {
+            min-width: 6rem;
+            outline: none;
+            background: #3E54AC;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 30px;
+            cursor: pointer;
+            border-radius: 4px;
+            border: none;
+        }
+        .buttons .btn:hover {
+            background: #2d4299;
+        }
+        .buttons .btn:active {
+            background: #162975;
+        }
+        .buttons .btn.feed {
+            background: #40513B;
+        }
+        .buttons .btn.feed:hover {
+            background: #31442b;
+        }
+        .buttons .btn.feed:active {
+            background: #172014;
+        }
+    </style>
+</head>
+<body>
+    <div class="buttons">
+        <button
+            class="btn"
+            id="show"
+            style="display: none;"
+        >Show</button>
+        <button
+            class="btn"
+            id="hide"
+            style="display: none;"
+        >Hide</button>
+        <button
+            class="btn feed"
+            id="feed"
+        >Feed</button>
+    </div>
+
+    <script src="popup.js" defer></script>
+</body>
+</html>
