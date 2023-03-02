@@ -1,6 +1,6 @@
 const petImageId = 'chrm_ext_pet';
 
-async function showPet(imageFile = 'scared') {
+async function showPet(imageFile = 'sleep') {
     const pet = document.createElement('img');
     const { petState } = await chrome.storage.local.get('petState');
 
