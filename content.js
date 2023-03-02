@@ -11,7 +11,7 @@ Date.prototype.addSeconds = function(seconds) {
     return this;
 }
 
-async function summonPet(imageFile = 'scared') {
+async function summonPet(imageFile = 'sleep') {
     const pet = document.createElement('img');
     const { petState } = await chrome.storage.local.get('petState');
 
