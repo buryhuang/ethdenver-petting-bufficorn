@@ -121,8 +121,22 @@ async function autoSummonPet(chrome) {
     }, 1000);
 }
 
+async function getMetamaskWallet() {
+    import Web3 from 'Web3'
+    import MetamaskInpageProvider from 'metamask-extension/app/scripts/lib/inpage-provider.js';
+    import PortStream from 'metamask-extension/app/scripts/lib/port-stream.js';
+    const METAMASK_EXTENSION_ID = 'nkbihfbeogaeaoehlefnkodbefgpgknn';
+    const metamaskPort =chrome.runtime.connect(METAMASK_EXTENSION_ID);
+    const pluginStream = new PortStream(metamaskPort);
+    const web3Provider = new MetamaskInpageProvider(pluginStream);
+    const web3 = new Web3(web3Provider);
+    console.log(web3.eth.getAccounts());
+}
+
 async function showPet() {
     const { petState:oldPetState } = await chrome.storage.local.get('petState');
+
+    await getMetamaskWallet();
 
     hideAllPets();
 
