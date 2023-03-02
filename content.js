@@ -1,5 +1,6 @@
-const petImageId = 'chrm_ext_pet';
-let interval;
+const petWrapperId = 'chrm_ext_pet_123456';
+let visibilityInterval,
+    eventsInterval;
 
 // Date object extension
 Date.prototype.addHours = function(hours) {
@@ -11,40 +12,46 @@ Date.prototype.addSeconds = function(seconds) {
     return this;
 }
 
-async function summonPet(imageFile = 'sleep') {
+async function summonPet(imageFile = 'scared') {
+    const wrapper = document.createElement('div');
     const pet = document.createElement('img');
     const { petState } = await chrome.storage.local.get('petState');
 
     // Src
     pet.src = chrome.runtime.getURL(`images/${imageFile}.gif`);
 
-    // Styling
-    pet.id = petImageId;
+    // Wrapper Styling
+    wrapper.id = petWrapperId;
+    wrapper.style.width = '200px';
+    wrapper.style.height = 'auto';
+    wrapper.style.position = 'fixed';
+    wrapper.style.top = petState.top ? `${petState.top}px` : '50%';
+    wrapper.style.left = petState.left ? `${petState.left}px` : '50%';
+    wrapper.style.transform = 'translate(-50%, -50%)';
+    wrapper.style.zIndex = '10000000000';
+    wrapper.style.cursor = 'grab';
+    wrapper.style['user-drag'] = 'none';
+    wrapper.style['-webkit-user-drag'] = 'none';
+    wrapper.style['user-select'] = 'none';
+    wrapper.style['-webkit-user-select'] = 'none';
+
+    // Pet Styling
     pet.style.width = '200px';
-    pet.style.height = 'auto';
-    pet.style.position = 'fixed';
-    pet.style.top = `${petState.top}px` || '50%';
-    pet.style.left = `${petState.left}px` || '50%';
-    pet.style.transform = 'translate(-50%, -50%)';
-    // pet.style.pointerEvents = 'none';
-    pet.style.zIndex = '10000000000';
-    pet.style.cursor = 'grab';
-    pet.style['user-drag'] = 'none';
-    pet.style['-webkit-user-drag'] = 'none';
-    pet.style['user-select'] = 'none';
-    pet.style['-moz-user-select'] = 'none';
-    pet.style['-webkit-user-select'] = 'none';
-    pet.style['-ms-user-select'] = 'none';
+    pet.style.pointerEvents = 'none';
 
     // Append to body
-    document.body.appendChild(pet);
+    document.body.appendChild(wrapper);
+    wrapper.appendChild(pet);
 
     // Activate drag
     activateDragging();
+
+    // Init events
+    initEvents();
 }
 
 function hideAllPets() {
-    const pets = document.querySelectorAll(`img#${petImageId}`);
+    const pets = document.querySelectorAll(`#${petWrapperId}`);
 
     pets.forEach(function(pet) {
         pet?.remove();
@@ -52,7 +59,7 @@ function hideAllPets() {
 }
 
 function activateDragging() {
-    const pet = document.querySelector(`img#${petImageId}`);
+    const pet = document.querySelector(`#${petWrapperId}`);
     let isDragging = false;
 
     if(pet !== null) {
@@ -101,7 +108,7 @@ async function autoSummonPet(chrome) {
     const { petState } = await chrome.storage.local.get('petState');
     const { isPetHappy, visibleAt } = petState;
 
-    interval = setInterval(function() {
+    visibilityInterval = setInterval(function() {
         const currentTime = new Date();
 
         if(currentTime >= new Date(visibleAt)) {
@@ -116,7 +123,7 @@ async function autoSummonPet(chrome) {
             if(isPetHappy) summonPet('happy');
             else summonPet();
 
-            clearInterval(interval);
+            clearInterval(visibilityInterval);
         }
     }, 1000);
 }
@@ -137,7 +144,7 @@ async function showPet() {
     });
 
     summonPet();
-    clearInterval(interval);
+    clearInterval(visibilityInterval);
 }
 
 async function hidePet() {
@@ -156,6 +163,7 @@ async function hidePet() {
     });
 
     autoSummonPet(chrome);
+    clearInterval(eventsInterval);
 }
 
 async function feedPet() {
@@ -173,17 +181,64 @@ async function feedPet() {
         }
     });
 
-    summonPet('happy');
-    clearInterval(interval);
+    await summonPet('happy');
+    clearInterval(visibilityInterval);
+}
+
+async function makePetSay(sentence = '') {
+    const wrapper = document.querySelector(`#${petWrapperId}`);
+    const text = wrapper?.querySelectorAll('h4');
+
+    // Remove existing sentences
+    if(text?.length) {
+        text?.forEach(function(item) {
+            item.remove();
+        });
+    }
+
+    // SAYYY
+    if(sentence !== null || sentence !== '' || typeof sentence !== 'undefined') {
+        const newText = document.createElement('h4');
+
+        // Styling
+        newText.style.margin = '0';
+        newText.style.marginBottom = '10px';
+        newText.style.padding = '0';
+        newText.style.fontSize = '16px';
+        newText.style.fontFamily = 'Roboto, sans-serif';
+        newText.style.color = 'red';
+        newText.style.textAlign = 'center';
+        newText.style.lineHeight = '1.2';
+
+        // Text
+        newText.innerText = sentence;
+
+        wrapper?.prepend(newText);
+    }
 }
 
 async function initEvents() {
-    eventOne();
-    eventTwo();
+    eventsInterval = setInterval(function() {
+        eventOne();
+        eventTwo();
+    }, 3000);
 }
 
-async function eventOne() {}
-async function eventTwo() {}
+async function eventOne() {
+    try {
+        const response = await fetch('https://random-data-api.com/api/users/random_user');
+        const data = await response.json();
+
+        const { city, country, state, zip_code} = data.address;
+        makePetSay(`${city} ${state} ${country} ${zip_code}`);
+    } catch (err) {
+        console.log(err);
+    }
+}
+async function eventTwo() {
+    const url = window.location.href;
+    console.log('Event 2', url);
+}
 
 // On page load
 chrome.storage.local.get('petState', ({ petState }) => {
