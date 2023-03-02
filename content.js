@@ -1,6 +1,17 @@
 const petImageId = 'chrm_ext_pet';
+let interval;
 
-async function showPet(imageFile = 'sleep') {
+// Date object extension
+Date.prototype.addHours = function(hours) {
+    this.setTime(this.getTime() + (hours * 60 * 60 * 1000));
+    return this;
+}
+Date.prototype.addSeconds = function(seconds) {
+    this.setTime(this.getTime() + (seconds * 1000));
+    return this;
+}
+
+async function summonPet(imageFile = 'scared') {
     const pet = document.createElement('img');
     const { petState } = await chrome.storage.local.get('petState');
 
@@ -12,8 +23,8 @@ async function showPet(imageFile = 'sleep') {
     pet.style.width = '200px';
     pet.style.height = 'auto';
     pet.style.position = 'fixed';
-    pet.style.top = '50%';
-    pet.style.left = '50%';
+    pet.style.top = `${petState.top}px` || '50%';
+    pet.style.left = `${petState.left}px` || '50%';
     pet.style.transform = 'translate(-50%, -50%)';
     // pet.style.pointerEvents = 'none';
     pet.style.zIndex = '10000000000';
@@ -27,14 +38,6 @@ async function showPet(imageFile = 'sleep') {
 
     // Append to body
     document.body.appendChild(pet);
-
-    // Reposition pet
-    if(typeof petState !== 'undefined') {
-        const { left, top } = petState;
-
-        pet.style.left = `${left}px`;
-        pet.style.top = `${top}px`;
-    }
 
     // Activate drag
     activateDragging();
@@ -94,56 +97,141 @@ function activateDragging() {
     }
 }
 
+async function autoSummonPet(chrome) {
+    const { petState } = await chrome.storage.local.get('petState');
+    const { isPetHappy, visibleAt } = petState;
+
+    interval = setInterval(function() {
+        const currentTime = new Date();
+
+        if(currentTime >= new Date(visibleAt)) {
+            chrome.storage.local.set({
+                petState: {
+                    ...petState,
+                    isPetVisible: true,
+                    visibleAt: null,
+                }
+            });
+
+            if(isPetHappy) summonPet('happy');
+            else summonPet();
+
+            clearInterval(interval);
+        }
+    }, 1000);
+}
+
+async function showPet() {
+    const { petState:oldPetState } = await chrome.storage.local.get('petState');
+
+    hideAllPets();
+
+    // Set state to local storage
+    await chrome.storage.local.set({
+        petState: {
+            ...oldPetState,
+            isPetVisible: true,
+            isPetHappy: false,
+            visibleAt: null,
+        }
+    });
+
+    summonPet();
+    clearInterval(interval);
+}
+
+async function hidePet() {
+    const { petState:oldPetState } = await chrome.storage.local.get('petState');
+
+    hideAllPets();
+    const plusTwoHours = new Date().addSeconds(10);
+
+    // Hide for 2 hours
+    await chrome.storage.local.set({
+        petState: {
+            ...oldPetState,
+            isPetVisible: false,
+            visibleAt: plusTwoHours.toString(),
+        }
+    });
+
+    autoSummonPet(chrome);
+}
+
+async function feedPet() {
+    const { petState:oldPetState } = await chrome.storage.local.get('petState');
+
+    hideAllPets();
+
+    // Set state to local storage
+    await chrome.storage.local.set({
+        petState: {
+            ...oldPetState,
+            isPetVisible: true,
+            isPetHappy: true,
+            visibleAt: null,
+        }
+    });
+
+    summonPet('happy');
+    clearInterval(interval);
+}
+
+async function initEvents() {
+    eventOne();
+    eventTwo();
+}
+
+async function eventOne() {}
+async function eventTwo() {}
+
+// On page load
 chrome.storage.local.get('petState', ({ petState }) => {
 
     if(typeof petState !== 'undefined') {
-        const { isPetVisible, isPetHappy } = petState;
+        const { isPetVisible, isPetHappy, visibleAt, left, top } = petState;
+        const now = new Date();
 
         if(isPetVisible) {
-            if(isPetHappy) showPet('happy');
-            else showPet();
+            if(isPetHappy) summonPet('happy');
+            else summonPet();
+        }
+
+        // Check for timeout
+        if(!isPetVisible && typeof visibleAt !== 'undefined' && visibleAt !== null) {
+
+            if(now >= new Date(visibleAt)) {
+                if(isPetHappy) summonPet('happy');
+                else summonPet();
+
+                chrome.storage.local.set({
+                    petState: {
+                        ...petState,
+                        isPetVisible: true,
+                        isPetHappy: isPetHappy,
+                        visibleAt: null,
+                    }
+                });
+            } else {
+                autoSummonPet(chrome);
+            }
         }
     }
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+// User actions
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     const { action } = message;
 
     switch (action) {
         case 'show':
-            hideAllPets();
             showPet();
-
-            // Set state to local storage
-            chrome.storage.local.set({
-                petState: {
-                    isPetVisible: true,
-                    isPetHappy: false,
-                }
-            });
             break;
         case 'hide':
-            hideAllPets();
-
-            // Remove state from local storage
-            chrome.storage.local.set({
-                petState: {
-                    isPetVisible: false,
-                    isPetHappy: true,
-                }
-            });
+            hidePet();
             break;
         case 'feed':
-            hideAllPets();
-            showPet('happy');
-
-            // Set state to local storage
-            chrome.storage.local.set({
-                petState: {
-                    isPetVisible: true,
-                    isPetHappy: true,
-                }
-            });
+            feedPet();
             break;
     }
 });

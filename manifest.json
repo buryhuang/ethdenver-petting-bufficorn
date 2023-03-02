@@ -22,6 +22,9 @@
         "default_title": "TingVerse Pets Default Title",
         "default_popup": "popup.html"
     },
+    "background": {
+        "service_worker": "background.js"
+    },
     "content_scripts": [{
         "js": [
             "content.js"
