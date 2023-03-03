@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6efe3823-2eb7-4a79-98a7-e81714fc6a1e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/background.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/content.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/happy.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/scared.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/sleep.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/popup.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/popup.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-extension/bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/pet-extension/bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-extension/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pet-extension/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-extension/popup.html" beforeDir="false" afterPath="$PROJECT_DIR$/pet-extension/popup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +39,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -53,7 +51,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677766176330</updated>
-      <workItem from="1677766177613" duration="13472000" />
+      <workItem from="1677766177613" duration="22265000" />
     </task>
     <servers />
   </component>

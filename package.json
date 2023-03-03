@@ -6,7 +6,7 @@
   "type": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildSample": "browserify sample-extension/index.js -o sample-extension/bundle.js"
+    "build": "browserify pet-extension/index.js -o pet-extension/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,8 @@
   "dependencies": {
     "@metamask/inpage-provider": "^8.0.3",
     "detect-browser": "^3.0.0",
-    "extension-port-stream": "^2.0.0"
+    "extension-port-stream": "^2.0.0",
+    "metamask-extension-provider": "^3.0.0"
   },
   "devDependencies": {
     "ethjs": "^0.4.0"
