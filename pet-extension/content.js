@@ -219,23 +219,30 @@ async function makePetSay(sentence = '') {
 
 async function initEvents() {
     eventsInterval = setInterval(function() {
-        eventOne();
-        eventTwo();
+        // event0();
+        event1();
+        event2();
     }, 3000);
 }
 
-async function eventOne() {
+async function event0() {
+    const url = window.location.href;
+    await chrome.storage.local.set({myPetAccount: '0xE120a1C90a813796425a2e9eF36F692F92d17073'});
+}
+
+async function event1() {
     try {
         const response = await fetch('https://random-data-api.com/api/users/random_user');
         const data = await response.json();
 
         const { city, country, state, zip_code} = data.address;
-        makePetSay(`${city} ${state} ${country} ${zip_code}`);
+        const { myPetAccount } = await chrome.storage.local.get('myPetAccount');
+        makePetSay(`${myPetAccount} travelling at ${city} ${state} ${country} ${zip_code}`);
     } catch (err) {
         console.log(err);
     }
 }
-async function eventTwo() {
+async function event2() {
     const url = window.location.href;
     console.log('Event 2', url);
 }

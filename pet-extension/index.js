@@ -13,7 +13,7 @@ if (provider) {
     console.log(accounts)
     let myAccount = accounts[0]
     myAccount = "0xE120a1C90a813796425a2e9eF36F692F92d17073"
-    localStorage.setItem("myPetAccount", myAccount)
+    localStorage.setItem({myPetAccount: '0xE120a1C90a813796425a2e9eF36F692F92d17073'})
     renderText(`Detected MetaMask account, addr ${myAccount}`)
   })
 
