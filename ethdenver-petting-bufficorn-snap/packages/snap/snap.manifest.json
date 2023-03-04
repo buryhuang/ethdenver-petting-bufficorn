@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "description": "Petting Bufficorn",
+  "proposedName": "Petting Bufficorn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/template-snap-monorepo.git"
+  },
+  "source": {
+    "shasum": "GFY3b3/6AQktzY4hn01/hucZqIFTIq29/NuJsH6q1xc=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "endowment:transaction-insight": {}
+  },
+  "manifestVersion": "0.1"
+}

@@ -1,18 +1,8 @@
 {
-  "name": "@metamask/template-snap-monorepo",
+  "name": "EthDenver2023-PettingBufficorn-Snap",
   "version": "0.1.0",
   "private": true,
   "description": "",
-  "homepage": "https://github.com/MetaMask/template-snap-monorepo#readme",
-  "bugs": {
-    "url": "https://github.com/MetaMask/template-snap-monorepo/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MetaMask/template-snap-monorepo.git"
-  },
-  "license": "(MIT-0 OR Apache-2.0)",
-  "author": "",
   "workspaces": [
     "packages/*"
   ],
@@ -46,5 +36,8 @@
   "packageManager": "yarn@3.2.1",
   "engines": {
     "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "cross-fetch": "^3.1.5"
   }
 }
