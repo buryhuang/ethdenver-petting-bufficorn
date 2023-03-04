@@ -21,21 +21,24 @@ HOST = '0.0.0.0' if args.host == 'localhost' else args.host.lower()
 server = flask.Flask(__name__, static_folder=utils.DB_PATH)
 CORS(server, supports_credetials=True)
 
-
-@server.route("/user_login", methods=['POST'])
-def user_login():
-    data = request.get_json()
-    user_address = utils.checkSumAddress(data['user_address'])
-    database.user_login(user_address)
+@server.route("/address_risk", methods=['GET'])
+def address_risk():
     return flask.Response(status=200, response=json.dumps({'message': 'login success.', 'status': 1}))
 
-
-@server.route("/user_balance", methods=['POST'])
-def user_balance():
-    data = request.get_json()
-    user_address = utils.checkSumAddress(data['user_address'])
-    tokens = database.user_get_balance(user_address)
-    return flask.Response(status=200, response=json.dumps({'user_tokens': tokens, 'status': 1}))
+# @server.route("/user_login", methods=['POST'])
+# def user_login():
+#     data = request.get_json()
+#     user_address = utils.checkSumAddress(data['user_address'])
+#     database.user_login(user_address)
+#     return flask.Response(status=200, response=json.dumps({'message': 'login success.', 'status': 1}))
+#
+#
+# @server.route("/user_balance", methods=['POST'])
+# def user_balance():
+#     data = request.get_json()
+#     user_address = utils.checkSumAddress(data['user_address'])
+#     tokens = database.user_get_balance(user_address)
+#     return flask.Response(status=200, response=json.dumps({'user_tokens': tokens, 'status': 1}))
 
 
 if __name__ == '__main__':
