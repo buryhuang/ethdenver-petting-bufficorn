@@ -17,6 +17,9 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
   const respData = await response.json();
   console.log(respData);
 
+  const petUrl = `http://127.0.0.1:8700/pet_happy`
+  await fetch(petUrl); // notify pet
+
   // // Cases for returning insights
   // if (data.status == "ok"){
   //   const individual_scores = stringify_json('individual_scores', data)

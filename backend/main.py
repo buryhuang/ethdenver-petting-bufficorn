@@ -21,9 +21,32 @@ HOST = '0.0.0.0' if args.host == 'localhost' else args.host.lower()
 server = flask.Flask(__name__, static_folder=utils.DB_PATH)
 CORS(server, supports_credetials=True)
 
-@server.route("/address_risk", methods=['GET'])
-def address_risk():
+memdb = {}
+
+@server.route("/pet_sleep", methods=['GET'])
+def pet_sleep():
+    memdb['pet_state'] = {"reaction": "sleep", "state": ""}
+    print(memdb)
     return flask.Response(status=200, response=json.dumps({'message': 'login success.', 'status': 1}))
+
+@server.route("/pet_happy", methods=['GET'])
+def pet_happy():
+    memdb['pet_state'] = {"reaction": "happy", "state": ""}
+    print(memdb)
+    return flask.Response(status=200, response=json.dumps({'message': 'login success.', 'status': 1}))
+
+@server.route("/pet_warning", methods=['GET'])
+def pet_warning():
+    memdb['pet_state'] = {"reaction": "scared", "state": "warning"}
+    print(memdb)
+    return flask.Response(status=200, response=json.dumps({'message': 'login success.', 'status': 1}))
+
+@server.route("/pet_state", methods=['GET'])
+def pet_state():
+    result = {}
+    if 'pet_state' in memdb:
+        result = memdb['pet_state']
+    return flask.Response(status=200, response=json.dumps(result))
 
 # @server.route("/user_login", methods=['POST'])
 # def user_login():

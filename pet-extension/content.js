@@ -232,12 +232,13 @@ async function event0() {
 
 async function event1() {
     try {
-        const response = await fetch('https://random-data-api.com/api/users/random_user');
+        // const response = await fetch('https://random-data-api.com/api/users/random_user');
+        const response = await fetch('http://127.0.0.1:8700/pet_state');
         const data = await response.json();
 
-        const { city, country, state, zip_code} = data.address;
-        const { myPetAccount } = await chrome.storage.local.get('myPetAccount');
-        makePetSay(`${myPetAccount} travelling at ${city} ${state} ${country} ${zip_code}`);
+        const { reaction, state } = data;
+        // const { myPetAccount } = await chrome.storage.local.get('myPetAccount');
+        makePetSay(`${reaction} ${state}`);
     } catch (err) {
         console.log(err);
     }

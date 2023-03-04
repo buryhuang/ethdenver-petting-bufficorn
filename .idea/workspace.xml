@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31d56534-fab2-44e3-a54a-abee88c4a80c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ethdenver-petting-bufficorn-snap/packages/snap/snap.manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/ethdenver-petting-bufficorn-snap/packages/snap/snap.manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ethdenver-petting-bufficorn-snap/packages/snap/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ethdenver-petting-bufficorn-snap/packages/snap/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pet-extension/content.js" beforeDir="false" afterPath="$PROJECT_DIR$/pet-extension/content.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
