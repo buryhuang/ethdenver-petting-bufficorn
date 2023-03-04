@@ -129,28 +129,28 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>Petting Bufficorn</Span>
       </Heading>
-      <Subtitle>
-        Get started by editing <code>src/index.ts</code>
-      </Subtitle>
+      {/*<Subtitle>*/}
+      {/*  Get started by editing <code>src/index.ts</code>*/}
+      {/*</Subtitle>*/}
       <CardContainer>
         {state.error && (
           <ErrorMessage>
             <b>An error happened:</b> {state.error.message}
           </ErrorMessage>
         )}
-        {!state.isFlask && (
-          <Card
-            content={{
-              title: 'Install',
-              description:
-                'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
-              button: <InstallFlaskButton />,
-            }}
-            fullWidth
-          />
-        )}
+        {/*{!state.isFlask && (*/}
+        {/*  <Card*/}
+        {/*    content={{*/}
+        {/*      title: 'Install',*/}
+        {/*      description:*/}
+        {/*        'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',*/}
+        {/*      button: <InstallFlaskButton />,*/}
+        {/*    }}*/}
+        {/*    fullWidth*/}
+        {/*  />*/}
+        {/*)}*/}
         {!state.installedSnap && (
           <Card
             content={{
@@ -183,33 +183,6 @@ const Index = () => {
             disabled={!state.installedSnap}
           />
         )}
-        <Card
-          content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            state.isFlask &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
-        <Notice>
-          <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
-          </p>
-        </Notice>
       </CardContainer>
     </Container>
   );
