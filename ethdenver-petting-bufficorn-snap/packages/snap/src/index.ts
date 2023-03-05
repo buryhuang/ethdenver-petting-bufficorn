@@ -12,13 +12,22 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
 
   // Call api for risk assessment
   // 0xecd2106311e08F55d10707F09E75BB107F2B1C92
+
+  const goodAddress = '0x6F7a6328D21347FbD3CE4652b2c21e80DE2e3F6C';
+  const badAddress = '0xf6De0609dbb1F3E3e4ef32cF4E932221672A0dd5';
+
   const url = `https://api.gopluslabs.io/api/v1/address_security/${toAddress}?chain_id=${txChainId}`;
   const response = await fetch(url);
   const respData = await response.json();
   console.log(respData);
 
-  const petUrl = `http://127.0.0.1:8700/pet_happy`
-  await fetch(petUrl); // notify pet
+  if (toAddress === goodAddress.toLowerCase()) {
+    const petUrl = `http://127.0.0.1:8700/pet_happy`
+    await fetch(petUrl); // notify pet
+  } else if (toAddress === badAddress.toLowerCase()) {
+    const petUrl = `http://127.0.0.1:8700/pet_warning`
+    await fetch(petUrl); // notify pet
+  }
 
   // // Cases for returning insights
   // if (data.status == "ok"){
@@ -45,7 +54,7 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
     content: panel([
       heading('Percent Snap'),
       text(
-        `You are sending to to Address ${JSON.stringify(respData)}`,
+        `You are sending to to Address ${toAddress} ${JSON.stringify(respData)}`,
       ),
     ]),
   };

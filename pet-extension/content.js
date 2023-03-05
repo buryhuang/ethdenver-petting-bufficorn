@@ -120,8 +120,9 @@ async function autoSummonPet(chrome) {
                 }
             });
 
-            if(isPetHappy) summonPet('happy');
-            else summonPet();
+            // if(isPetHappy) summonPet('happy');
+            // else summonPet();
+            summonPet(petState.reaction);
 
             clearInterval(visibilityInterval);
         }
@@ -239,6 +240,19 @@ async function event1() {
         const { reaction, state } = data;
         // const { myPetAccount } = await chrome.storage.local.get('myPetAccount');
         makePetSay(`${reaction} ${state}`);
+        const { petState } = await chrome.storage.local.get('petState');
+        if (petState.reaction !== reaction) {
+            console.log('reaction changed', petState.reaction, reaction)
+            hideAllPets(); // remove existing pets
+            summonPet(reaction);
+        }
+        await chrome.storage.local.set({
+            petState: {
+                ...petState,
+                reaction: reaction
+            }
+        });
+
     } catch (err) {
         console.log(err);
     }
@@ -252,20 +266,22 @@ async function event2() {
 chrome.storage.local.get('petState', ({ petState }) => {
 
     if(typeof petState !== 'undefined') {
-        const { isPetVisible, isPetHappy, visibleAt, left, top } = petState;
+        const { isPetVisible, isPetHappy, visibleAt, left, top, reaction } = petState;
         const now = new Date();
 
         if(isPetVisible) {
-            if(isPetHappy) summonPet('happy');
-            else summonPet();
+            // if(isPetHappy) summonPet('happy');
+            // else summonPet();
+            summonPet(reaction);
         }
 
         // Check for timeout
         if(!isPetVisible && typeof visibleAt !== 'undefined' && visibleAt !== null) {
 
             if(now >= new Date(visibleAt)) {
-                if(isPetHappy) summonPet('happy');
-                else summonPet();
+                // if(isPetHappy) summonPet('happy');
+                // else summonPet();
+                summonPet(reaction);
 
                 chrome.storage.local.set({
                     petState: {
