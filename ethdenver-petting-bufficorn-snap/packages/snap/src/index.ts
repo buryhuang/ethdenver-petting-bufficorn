@@ -58,16 +58,22 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
   }
   if (allPass) {
     varResults = 'All checks passed';
+    const petUrl = `http://127.0.0.1:8700/pet_happy`
+    await fetch(petUrl); // notify pet
   } else {
     varResults = `Some checks failed: [${fullPassResults}]`;
+    const petUrl = `http://127.0.0.1:8700/pet_warning`
+    await fetch(petUrl); // notify pet
   }
 
+  // Using hardcoded addresses for demo
   if (toAddress === goodAddress.toLowerCase()) {
     const petUrl = `http://127.0.0.1:8700/pet_happy`
     await fetch(petUrl); // notify pet
   } else if (toAddress === badAddress.toLowerCase()) {
     const petUrl = `http://127.0.0.1:8700/pet_warning`
     await fetch(petUrl); // notify pet
+    varResults = `Some checks failed: [${fullPassResults}]`;
   }
 
   return {

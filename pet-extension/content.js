@@ -122,7 +122,7 @@ async function autoSummonPet(chrome) {
 
             // if(isPetHappy) summonPet('happy');
             // else summonPet();
-            summonPet(petState.reaction);
+            summonPet('sleep');
 
             clearInterval(visibilityInterval);
         }
@@ -179,10 +179,11 @@ async function feedPet() {
             isPetVisible: true,
             isPetHappy: true,
             visibleAt: null,
+            reacction: 'sleep',
         }
     });
 
-    await summonPet('happy');
+    await summonPet('sleep');
     clearInterval(visibilityInterval);
 }
 
