@@ -1,4 +1,4 @@
-import { OnTransactionHandler } from '@metamask/snaps-types';
+import { OnTransactionHandler, OnRpcRequestHandler } from '@metamask/snaps-types';
 import { heading, panel, text } from '@metamask/snaps-ui';
 
 // Handle outgoing transactions
@@ -21,6 +21,47 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
   const respData = await response.json();
   console.log(respData);
 
+  let varResults = '';
+
+  // {
+  // 	"code": 1,
+  // 	"message": "ok",
+  // 	"result": {
+  // 		"cybercrime": "0",
+  // 		"money_laundering": "0",
+  // 		"number_of_malicious_contracts_created": "0",
+  // 		"financial_crime": "0",
+  // 		"darkweb_transactions": "0",
+  // 		"phishing_activities": "0",
+  // 		"contract_address": "0",
+  // 		"fake_kyc": "0",
+  // 		"blacklist_doubt": "0",
+  // 		"data_source": "",
+  // 		"stealing_attack": "0",
+  // 		"blackmail_activities": "0",
+  // 		"sanctioned": "0",
+  // 		"malicious_mining_activities": "0",
+  // 		"mixer": "0",
+  // 		"honeypot_related_address": "0"
+  // 	}
+  // }
+  const goPlusChecks = respData;
+  let fullPassResults = '';
+  let allPass = true;
+  for (const key in goPlusChecks.result) {
+    const checkResult = goPlusChecks.result[key];
+    fullPassResults += `${key}: ${checkResult} \n`;
+    if (checkResult === '1') {
+      varResults += `${key} FAILED \n`;
+      allPass = false;
+    }
+  }
+  if (allPass) {
+    varResults = 'All checks passed';
+  } else {
+    varResults = `Some checks failed: [${fullPassResults}]`;
+  }
+
   if (toAddress === goodAddress.toLowerCase()) {
     const petUrl = `http://127.0.0.1:8700/pet_happy`
     await fetch(petUrl); // notify pet
@@ -29,32 +70,11 @@ export const onTransaction: OnTransactionHandler = async ({ transaction, chainId
     await fetch(petUrl); // notify pet
   }
 
-  // // Cases for returning insights
-  // if (data.status == "ok"){
-  //   const individual_scores = stringify_json('individual_scores', data)
-  //   const individual_details = stringify_json('contract_info', data)
-  //   return {
-  //     insights: {"Risk Assessment": data.risk_level, "Security Score": data.security_score, "Recommendation": data.recommendation, "Details": individual_details, "Individual Scores": individual_scores, "Assessment Timestamp": data.risk_assessment_timestamp, "IPFS Storage Hash": data.ipfs_hash},
-  //   };
-  // } else if(data.status =='error, not a contract address'){
-  //   return {
-  //     insights: {"No Score Available": "No interaction with a smart contract detected.", "Assessment Timestamp": data.risk_assessment_timestamp},
-  //   };
-  // } else if(data.status =='error, unsupported chain'){
-  //   return {
-  //     insights: {"Chain Not Supported": "We are currently supporting Ethereum and Goerli only. We are working on adding more networks."},
-  //   };
-  // } else {
-  //   return {
-  //     insights: {"Unknown Error": "An unknown error occured. Please contact the team and try again later."},
-  //   };
-  // }
-
   return {
     content: panel([
-      heading('Percent Snap'),
+      heading('Security Check'),
       text(
-        `You are sending to to Address ${toAddress} ${JSON.stringify(respData)}`,
+        `You are sending to to Address ${toAddress} \n ${varResults}`,
       ),
     ]),
   };
